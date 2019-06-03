@@ -1,0 +1,53 @@
+<html>
+	<head>
+		<title>DoRequests</title>
+		<script>
+			function f_submit() {
+				var url = document.getElementById("__form['url']").value;
+				var method = document.getElementById("__form['method']").options[document.getElementById("__form['method']").selectedIndex].value;
+				var reqparams = document.getElementById("__form['reqparams']").value;
+				if( !url || !method || !reqparams ) {
+					alert("ERROR: URL and Method and Request Parameters fields are required.");
+					return;
+				}
+				var lines = reqparams.split('\n');
+				for (var j = 0; j < lines.length; j++) {
+					var PostKey = lines[j].split("=")[0];
+					var PostValue = lines[j].split("=")[1];
+					var el = document.createElement("input");
+					el.type = "hidden";
+					el.name = PostKey;
+					el.value = PostValue;
+					document.getElementById("req_form").appendChild(el);
+				}
+				
+				document.getElementById("req_form").method = method;
+				document.getElementById("req_form").action = url;
+				document.getElementById("req_form").submit();
+				document.getElementById("req_form").reset();
+			}
+		</script>
+	</head>
+	
+	<body>
+		<center>
+			<h2>DoRequests</h2>
+			<p>By Mario</p>
+			
+			<hr>
+			
+			<div id="__form">
+				<strong>URL:</strong> <input type="text" id="__form['url']" required /><br />
+				<strong>Method:</strong> <select id="__form['method']" required>
+										  <option value="post">POST</option>
+										  <option value="get">GET</option>
+										</select><br />
+				<strong>Request Parameters (one per line):</strong><br /> <textarea rows="20" cols="60" id="__form['reqparams']" placeholder="key=value"></textarea><br /><br />
+				<button id="__form['submit']" onclick="f_submit()">Go!</button>
+			</div>
+		</center>
+		
+		<form action="" method="" target="_blank" id="req_form">
+		</form>
+	</body>
+</html>
